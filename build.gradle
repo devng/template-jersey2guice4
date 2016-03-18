@@ -1,0 +1,51 @@
+ext {
+	verJersey = '2.19'
+	verGuice = '4.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'jetty'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.11'
+}
+
+repositories {
+	mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+	compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0.1'
+	compile group: 'com.google.inject', name: 'guice', version: verGuice
+	compile group: 'com.google.inject.extensions', name: 'guice-servlet', version: verGuice
+	compile group: 'com.squarespace.jersey2-guice', name: 'jersey2-guice', version: "0.10"
+	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: verJersey
+	compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version: verJersey
+	compile group: 'com.owlike', name: 'genson', version: '1.3'
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDir 'src/main/resources'
+			srcDir 'src/main/webapp'
+		}
+	}
+}
+
+war {
+	archiveName = "jersey2guice4.war"
+
+	excludes += [
+			"**/rebel.xml"
+	]
+
+	from "${buildDir}/classes/main"
+}
+
